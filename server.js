@@ -94,16 +94,29 @@ app.post('/api/contributions', (req, res) => {
 app.delete('/api/contributions/:id', (req, res) => {
   const id = req.params.id;
   
-  db.run('DELETE FROM contributions WHERE id = ?', [id], function(err) {
+  // Önce kaydı bul ve miktarını al
+  db.get('SELECT amount FROM contributions WHERE id = ?', [id], (err, row) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-    if (this.changes === 0) {
+    if (!row) {
       res.status(404).json({ error: 'Katkı bulunamadı' });
       return;
     }
-    res.json({ success: true, message: 'Katkı silindi' });
+    
+    // Kaydı sil
+    db.run('DELETE FROM contributions WHERE id = ?', [id], function(deleteErr) {
+      if (deleteErr) {
+        res.status(500).json({ error: deleteErr.message });
+        return;
+      }
+      res.json({ 
+        success: true, 
+        message: 'Katkı silindi',
+        deletedAmount: row.amount 
+      });
+    });
   });
 });
 

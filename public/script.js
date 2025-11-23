@@ -109,8 +109,12 @@ async function deleteContribution(id) {
         
         if (response.ok && data.success) {
             showMessage('Katkı silindi.', 'success');
-            loadTotal();
-            loadContributions();
+            // Önce listeyi güncelle, sonra toplamı güncelle
+            await loadContributions();
+            // Kısa bir gecikme ile toplamı güncelle (veritabanı işleminin tamamlanması için)
+            setTimeout(() => {
+                loadTotal();
+            }, 100);
         } else {
             showMessage(data.error || 'Silme işlemi başarısız.', 'error');
         }
