@@ -22,7 +22,20 @@ Uygulamanızı ücretsiz olarak internete açmak için birkaç seçenek var. En 
    - "Get Started for Free" ile ücretsiz hesap oluşturun
    - GitHub hesabınızı bağlayın
 
-3. **Yeni Web Service Oluşturun:**
+3. **PostgreSQL Veritabanı Oluşturun (ÖNEMLİ - Verilerin kaybolmaması için):**
+   - Dashboard'da "New +" butonuna tıklayın
+   - "PostgreSQL" seçin
+   - Ayarlar:
+     - **Name:** kumbara-db (veya istediğiniz isim)
+     - **Database:** kumbara (veya istediğiniz isim)
+     - **User:** kumbara_user (veya istediğiniz isim)
+     - **Region:** Size yakın bir bölge seçin
+     - **Plan:** Free
+   - "Create Database" butonuna tıklayın
+   - Veritabanı oluşturulduktan sonra, "Connections" sekmesinden **Internal Database URL**'i kopyalayın
+   - Bu URL otomatik olarak `DATABASE_URL` environment variable olarak ayarlanacak
+
+4. **Yeni Web Service Oluşturun:**
    - Dashboard'da "New +" butonuna tıklayın
    - "Web Service" seçin
    - GitHub repository'nizi seçin
@@ -32,15 +45,27 @@ Uygulamanızı ücretsiz olarak internete açmak için birkaç seçenek var. En 
      - **Build Command:** `npm install`
      - **Start Command:** `npm start`
      - **Plan:** Free
+   - **Environment Variables** bölümüne gidin:
+     - Eğer PostgreSQL veritabanınızı oluşturduysanız, `DATABASE_URL` otomatik olarak eklenmiş olmalı
+     - Eğer yoksa, PostgreSQL veritabanınızın "Connections" sekmesinden Internal Database URL'i kopyalayıp `DATABASE_URL` olarak ekleyin
    - "Create Web Service" butonuna tıklayın
 
-4. **Hazır!** 
+5. **Web Service'i PostgreSQL'e Bağlayın:**
+   - PostgreSQL veritabanınızın sayfasına gidin
+   - "Connections" sekmesine gidin
+   - "Connect" butonuna tıklayın
+   - Web Service'inizi seçin ve bağlayın
+   - Bu işlem `DATABASE_URL` environment variable'ını otomatik olarak ayarlar
+
+6. **Hazır!** 
    - Render size bir link verecek (örnek: `https://kumbara.onrender.com`)
    - Bu linki herkesle paylaşabilirsiniz!
+   - **Artık verileriniz PostgreSQL'de kalıcı olarak saklanır ve kaybolmaz!** ✅
 
 ### ⚠️ Notlar:
 - Ücretsiz plan: Uygulama 15 dakika kullanılmazsa uyku moduna geçer, ilk istekte 30-60 saniye başlatma süresi olabilir
-- Veritabanı dosyası (`kumbara.db`) Render'ın diskinde saklanır
+- **PostgreSQL kullanıyorsanız verileriniz kesinlikle kaybolmaz!** (SQLite yerine)
+- PostgreSQL ücretsiz planında 1 GB veri saklayabilirsiniz (binlerce kayıt için yeterli)
 
 ---
 
